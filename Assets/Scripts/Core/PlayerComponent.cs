@@ -1,3 +1,5 @@
+using PotatoCat.Core;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +9,7 @@ public class PlayerComponent : KinematicObject
    #region Public Editor Properties
 
    public GameObject SpawnLocation;
+   public GameObject ProjectilePrefab;
    public AnimationClip IdleAnimation;
    public AnimationClip WalkingAnimation;
    public AudioClip Damage;
@@ -25,10 +28,13 @@ public class PlayerComponent : KinematicObject
 
    #region Internal Properties
 
-   bool jump;
-   Vector2 move;
-   SpriteRenderer spriteRenderer;
-   internal Animator animator;
+   bool mJump;
+   Vector2 mMove;
+   SpriteRenderer mSpriteRenderer;
+   internal Animator mAnimator;
+
+   private DateTime mLastTimeProjectileFired;
+   private static int skSecondsBetweenFiring = 1;
 
    public static float skJumpModifier = 1.5f;
    public static float skJumpDeceleration = 0.5f;
@@ -39,8 +45,8 @@ public class PlayerComponent : KinematicObject
 
    private void Awake()
    {
-      spriteRenderer = GetComponent<SpriteRenderer>();
-      animator = GetComponent<Animator>();
+      mSpriteRenderer = GetComponent<SpriteRenderer>();
+      mAnimator = GetComponent<Animator>();
       AudioSource = GetComponent<AudioSource>();
       Collider2d = GetComponent<Collider2D>();
    }
@@ -49,7 +55,11 @@ public class PlayerComponent : KinematicObject
    {
       if (ControlEnabled)
       {
-         move.x = Input.GetAxis("Horizontal");
+         //
+         // Handle Motion
+         //
+
+         mMove.x = Input.GetAxis("Horizontal");
          if (CurrentJumpState == JumpState.Grounded && Input.GetButtonDown("Jump"))
          {
             CurrentJumpState = JumpState.PrepareToJump;
@@ -57,12 +67,26 @@ public class PlayerComponent : KinematicObject
          else if (Input.GetButtonUp("Jump"))
          {
             StopJump = true;
-            //Schedule<PlayerStopJump>().player = this;
+         }
+
+         mAnimator.SetFloat("Horizontal", mMove.x);
+
+         //
+         // Handle Projectile
+         //
+
+         double secondsSinceLastProjectile = DateTime.Now.Subtract(mLastTimeProjectileFired).TotalSeconds;
+         if (Input.GetKey(KeyCode.E) && secondsSinceLastProjectile >= skSecondsBetweenFiring)
+         {
+            mLastTimeProjectileFired = DateTime.Now;
+            var projectile = Instantiate(ProjectilePrefab);
+            Vector3 placement = new Vector3(transform.position.x + 0.2f, transform.position.y, transform.position.z);
+            projectile.transform.position = placement;
          }
       }
       else
       {
-         move.x = 0;
+         mMove.x = 0;
       }
 
       UpdateJumpState();
@@ -71,12 +95,12 @@ public class PlayerComponent : KinematicObject
 
    void UpdateJumpState()
    {
-      jump = false;
+      mJump = false;
       switch (CurrentJumpState)
       {
          case JumpState.PrepareToJump:
             CurrentJumpState = JumpState.Jumping;
-            jump = true;
+            mJump = true;
             StopJump = false;
             break;
          case JumpState.Jumping:
@@ -101,10 +125,10 @@ public class PlayerComponent : KinematicObject
 
    protected override void ComputeVelocity()
    {
-      if (jump && IsGrounded)
+      if (mJump && IsGrounded)
       {
          velocity.y = JumpTakeOffSpeed * skJumpModifier;
-         jump = false;
+         mJump = false;
       }
       else if (StopJump)
       {
@@ -115,19 +139,19 @@ public class PlayerComponent : KinematicObject
          }
       }
 
-      if (move.x > 0.01f)
+      if (mMove.x > 0.01f)
       {
-         spriteRenderer.flipX = false;
+         mSpriteRenderer.flipX = false;
       }
-      else if (move.x < -0.01f)
+      else if (mMove.x < -0.01f)
       { 
-         spriteRenderer.flipX = true;
+         mSpriteRenderer.flipX = true;
       }
 
-      animator.SetBool("grounded", IsGrounded);
-      animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / MaxSpeed);
+      mAnimator.SetBool("grounded", IsGrounded);
+      mAnimator.SetFloat("velocityX", Mathf.Abs(velocity.x) / MaxSpeed);
 
-      targetVelocity = move * MaxSpeed;
+      targetVelocity = mMove * MaxSpeed;
    }
 
    public enum JumpState

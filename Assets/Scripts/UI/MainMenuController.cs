@@ -8,6 +8,16 @@ namespace PotatoCat.UI
    public class MainMenuController : MonoBehaviour
    {
       public string GameSceneName;
+      public AudioSource MainMenuAudio;
+
+      public void Awake()
+      {
+         if (MainMenuAudio != null)
+         {
+            MainMenuAudio.volume = 0.1f;
+            AudioListener.volume = 0.1f;
+         }
+      }
 
       public void StartGame()
       {

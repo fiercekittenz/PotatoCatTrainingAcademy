@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameSceneName: GameScene
+  MainMenuAudio: {fileID: 1861936117}
 --- !u!4 &206815513
 Transform:
   m_ObjectHideFlags: 0
@@ -214,6 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameSceneName: 
+  MainMenuAudio: {fileID: 0}
 --- !u!1 &326008502
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,15 +657,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Potato Cat Training Academy
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b54e509d01b64974cb481fc097f08ced, type: 2}
+  m_sharedMaterial: {fileID: 2797890805200906280, guid: b54e509d01b64974cb481fc097f08ced, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278636541
+  m_fontColor: {r: 0.990566, g: 0.8099807, b: 0.024919821, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -680,10 +682,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 188.15
-  m_fontSizeBase: 36
+  m_fontSize: 207.23
+  m_fontSizeBase: 207.23
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 200
   m_fontStyle: 1
@@ -819,7 +821,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8944822022424186530, guid: e515cf769c7c6df4e957d758b2d84cac, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 323
+      value: 369
       objectReference: {fileID: 0}
     - target: {fileID: 8944822022424186530, guid: e515cf769c7c6df4e957d758b2d84cac, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -885,7 +887,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 475f4837af487ce4a9e68bb227455e4c, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 1
   Mute: 0

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r11">
+    <folder id="0">
+        <file id="0" name="sp_player_idle_000.png" width="72" height="114" pivot_x="0" pivot_y="1"/>
+        <file id="1" name="kittenzSaberL.png" width="112" height="112" pivot_x="0.5" pivot_y="0.5"/>
+    </folder>
+    <entity id="0" name="projectile">
+        <animation id="0" name="saber" length="1000" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+                <key id="1" time="499">
+                    <object_ref id="0" timeline="0" key="1" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="kittenzSaberL">
+                <key id="0" spin="-1">
+                    <object folder="0" file="1" x="6" y="6"/>
+                </key>
+                <key id="1" time="499">
+                    <object folder="0" file="1" x="6" y="6" angle="300.735488" scale_x="1" scale_y="1"/>
+                </key>
+            </timeline>
+        </animation>
+    </entity>
+</spriter_data>

@@ -15,16 +15,16 @@ public class GameSimulation : MonoBehaviour
 
    public static GameSimulation Instance { get; private set; }
 
-   public static float skDefaultVolume = 0.25f;
+   public static float skDefaultVolume = 0.1f;
 
    public bool InGameMenuIsOpen { get; set; } = false;
 
    // Start is called before the first frame update
-   void Start()
+   void Awake()
    {
       Instance = this;
 
-      // Default start the volume at 50% - think of the ears!
+      // Default start the volume at 25% - think of the ears!
       float currentVolume = PlayerPrefs.GetFloat("Volume");
       if (currentVolume == 0)
       {
