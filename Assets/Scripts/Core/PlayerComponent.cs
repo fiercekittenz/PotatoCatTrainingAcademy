@@ -80,8 +80,17 @@ public class PlayerComponent : KinematicObject
          {
             mLastTimeProjectileFired = DateTime.Now;
             var projectile = Instantiate(ProjectilePrefab);
-            Vector3 placement = new Vector3(transform.position.x + 0.2f, transform.position.y, transform.position.z);
+            Vector3 placement = new Vector3(transform.position.x + 0.2f, transform.position.y + 0.1f, transform.position.z);
             projectile.transform.position = placement;
+
+            if (!mSpriteRenderer.flipX)
+            {
+               ProjectileController projectileController = projectile.GetComponent<ProjectileController>();
+               if (projectileController != null)
+               { 
+                  projectileController.FireDirection = ProjectileController.Direction.Left;
+               }
+            }
          }
       }
       else
