@@ -7,6 +7,7 @@ public class ProjectileController : MonoBehaviour
 {
    public int SecondsUntilDeath = 3;
    public float Velocity = 1.0f;
+   public float SpinVelocity = -500;
 
    public Direction FireDirection { get; set; } = Direction.Right;
 
@@ -67,6 +68,7 @@ public class ProjectileController : MonoBehaviour
             xPosition -= (Velocity * Time.deltaTime);
          }
 
+         transform.Rotate(Vector3.forward * SpinVelocity * Time.deltaTime);
          transform.position = new Vector3(xPosition,
                                           transform.position.y,
                                           transform.position.z);
