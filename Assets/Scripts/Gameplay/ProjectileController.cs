@@ -63,12 +63,12 @@ public class ProjectileController : MonoBehaviour
 
          if (FireDirection == Direction.Left)
          {
-            spin = SpinVelocity * Time.deltaTime;
+            spin = -SpinVelocity * Time.deltaTime;
             xPosition += (Velocity * Time.deltaTime);
          }
          else
          {
-            spin = -SpinVelocity * Time.deltaTime;
+            spin = SpinVelocity * Time.deltaTime;
             xPosition -= (Velocity * Time.deltaTime);
          }
 

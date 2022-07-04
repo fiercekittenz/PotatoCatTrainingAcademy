@@ -10,7 +10,7 @@ public class WaterDetector : MonoBehaviour
 
             if (player != null)
             {
-                transform.parent.GetComponent<SpriteShapeWater>().Splash(transform.position.x, player.velocity.y * collider.GetComponent<Rigidbody2D>().mass / 100f);
+                transform.parent.GetComponent<SpriteShapeWater>().Splash(transform.position.x, player.velocity.y * collider.GetComponent<Rigidbody2D>().mass / 80f);
             }
             else
             {
