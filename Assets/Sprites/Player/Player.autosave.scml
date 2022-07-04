@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r11">
+    <folder id="0">
+        <file id="0" name="kittenzPooptato_x112.png" width="112" height="112" pivot_x="0.5" pivot_y="0.5"/>
+    </folder>
+    <entity id="0" name="player">
+        <animation id="0" name="idle" length="1000" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+                <key id="1" time="749">
+                    <object_ref id="0" timeline="0" key="1" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="kittenzPooptato_x112">
+                <key id="0" spin="0">
+                    <object folder="0" file="0" x="1" y="4" angle="0" scale_x="-1"/>
+                </key>
+                <key id="1" time="749" spin="0">
+                    <object folder="0" file="0" x="1" y="12" angle="0" scale_x="-1"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="1" name="walk_left" length="1000" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+                <key id="1" time="500">
+                    <object_ref id="0" timeline="0" key="1" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="kittenzPooptato_x112">
+                <key id="0">
+                    <object folder="0" file="0" x="1" y="4"/>
+                </key>
+                <key id="1" time="500" spin="-1">
+                    <object folder="0" file="0" x="1" y="4" angle="10.619655" scale_y="1"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="2" name="walk_right" length="1000" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+                <key id="1" time="500">
+                    <object_ref id="0" timeline="0" key="1" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="kittenzPooptato_x112">
+                <key id="0" spin="-1">
+                    <object folder="0" file="0" x="1" y="4" angle="0" scale_x="-1"/>
+                </key>
+                <key id="1" time="500">
+                    <object folder="0" file="0" x="1" y="4" angle="345.599979" scale_x="-1"/>
+                </key>
+            </timeline>
+        </animation>
+    </entity>
+</spriter_data>
