@@ -1,4 +1,5 @@
 using PotatoCat.Core;
+using PotatoCat.Gameplay;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ public class PlayerComponent : KinematicObject
    public AudioClip Damage;
    public AudioClip Death;
    public AudioClip Shooting;
+   public int MillisecondsBetweenProjectiles = 500;
 
    public float MaxSpeed = 7;
    public float JumpTakeOffSpeed = 7;
@@ -33,7 +35,6 @@ public class PlayerComponent : KinematicObject
    internal Animator mAnimator;
 
    private DateTime mLastTimeProjectileFired;
-   private static int skSecondsBetweenFiring = 1;
 
    public static float skJumpModifier = 1.5f;
    public static float skJumpDeceleration = 0.5f;
@@ -72,8 +73,8 @@ public class PlayerComponent : KinematicObject
          // Handle Projectile
          //
 
-         double secondsSinceLastProjectile = DateTime.Now.Subtract(mLastTimeProjectileFired).TotalSeconds;
-         if (Input.GetKey(KeyCode.E) && secondsSinceLastProjectile >= skSecondsBetweenFiring)
+         double msSinceLastProjectile = DateTime.Now.Subtract(mLastTimeProjectileFired).TotalMilliseconds;
+         if (Input.GetKey(KeyCode.E) && msSinceLastProjectile >= MillisecondsBetweenProjectiles)
          {
             AudioSource.PlayOneShot(Shooting);
 

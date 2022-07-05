@@ -19,6 +19,7 @@ namespace PotatoCat.Events
 
          Vector3 spawnPointPosition = Player.SpawnLocation.transform.position;
          Player.transform.position = spawnPointPosition;
+         Player.ControlEnabled = true;
       }
    }
 }

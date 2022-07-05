@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 33207987079458110}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -90,10 +90,10 @@ MonoBehaviour:
   gravityModifier: 1
   velocity: {x: 0.25, y: 0.7}
   SpawnLocation: {fileID: 0}
-  IdleAnimation: {fileID: 7400000, guid: f0eaea8d84bcae14382635ecb75e9ec8, type: 2}
-  WalkingAnimation: {fileID: 7400000, guid: a5aab54b9984fc54d9496d8f81b38aae, type: 2}
+  ProjectilePrefab: {fileID: 0}
   Damage: {fileID: 8300000, guid: 2c5e2563b67d2ad42a16aaf1fda03c83, type: 3}
   Death: {fileID: 8300000, guid: b7f0194299fe76745942d810a1cdfd08, type: 3}
+  Shooting: {fileID: 0}
   MaxSpeed: 7
   JumpTakeOffSpeed: 7
   CurrentJumpState: 0
