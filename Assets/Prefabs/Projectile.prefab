@@ -170,7 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SecondsUntilDeath: 3
   Velocity: 3.5
-  SpinVelocity: -500
+  SpinVelocity: 500
   CollisionAudio: {fileID: 8300000, guid: b49b73cc9d63ef049a2a267cbcf4fb64, type: 3}
   BoomEffectPrefab: {fileID: 2374764009071037323, guid: 381b82a822712c643bc76210e55d9ba3, type: 3}
 --- !u!114 &5521010830355224764

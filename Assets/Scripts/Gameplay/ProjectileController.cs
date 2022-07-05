@@ -7,7 +7,7 @@ public class ProjectileController : MonoBehaviour
 {
    public int SecondsUntilDeath = 3;
    public float Velocity = 1.0f;
-   public float SpinVelocity = -500;
+   public float SpinVelocity = 500;
    public AudioClip CollisionAudio;
    public GameObject BoomEffectPrefab;
 
@@ -47,16 +47,20 @@ public class ProjectileController : MonoBehaviour
    protected void FixedUpdate()
    {
       float xPosition = transform.position.x;
+      float spin = SpinVelocity;
+
       if (FireDirection == Direction.Left)
       {
+         spin = -SpinVelocity* Time.deltaTime;
          xPosition += (Velocity * Time.deltaTime);
       }
       else
       {
+         spin = SpinVelocity* Time.deltaTime;
          xPosition -= (Velocity * Time.deltaTime);
       }
 
-      transform.Rotate(Vector3.forward * SpinVelocity * Time.deltaTime);
+      transform.Rotate(Vector3.forward * spin);
       transform.position = new Vector3(xPosition,
                                        transform.position.y,
                                        transform.position.z);
