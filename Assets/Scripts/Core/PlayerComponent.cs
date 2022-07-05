@@ -10,10 +10,9 @@ public class PlayerComponent : KinematicObject
 
    public GameObject SpawnLocation;
    public GameObject ProjectilePrefab;
-   public AnimationClip IdleAnimation;
-   public AnimationClip WalkingAnimation;
    public AudioClip Damage;
    public AudioClip Death;
+   public AudioClip Shooting;
 
    public float MaxSpeed = 7;
    public float JumpTakeOffSpeed = 7;
@@ -69,8 +68,6 @@ public class PlayerComponent : KinematicObject
             StopJump = true;
          }
 
-         mAnimator.SetFloat("Horizontal", mMove.x);
-
          //
          // Handle Projectile
          //
@@ -78,6 +75,8 @@ public class PlayerComponent : KinematicObject
          double secondsSinceLastProjectile = DateTime.Now.Subtract(mLastTimeProjectileFired).TotalSeconds;
          if (Input.GetKey(KeyCode.E) && secondsSinceLastProjectile >= skSecondsBetweenFiring)
          {
+            AudioSource.PlayOneShot(Shooting);
+
             mLastTimeProjectileFired = DateTime.Now;
             var projectile = Instantiate(ProjectilePrefab);
             Vector3 placement = new Vector3(transform.position.x + 0.2f, transform.position.y + 0.1f, transform.position.z);
@@ -95,6 +94,7 @@ public class PlayerComponent : KinematicObject
       }
       else
       {
+         mAnimator.SetBool("Walking", false);
          mMove.x = 0;
       }
 
@@ -161,6 +161,15 @@ public class PlayerComponent : KinematicObject
       mAnimator.SetFloat("velocityX", Mathf.Abs(velocity.x) / MaxSpeed);
 
       targetVelocity = mMove * MaxSpeed;
+
+      if (targetVelocity.x == 0.0f)
+      {
+         mAnimator.SetBool("Walking", false);
+      }
+      else
+      {
+         mAnimator.SetBool("Walking", true);
+      }
    }
 
    public enum JumpState
