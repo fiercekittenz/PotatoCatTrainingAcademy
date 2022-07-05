@@ -8,6 +8,8 @@ public class ProjectileController : MonoBehaviour
    public int SecondsUntilDeath = 3;
    public float Velocity = 1.0f;
    public float SpinVelocity = 500;
+   public AudioClip CollisionAudio;
+   public GameObject BoomEffectPrefab;
 
    public Direction FireDirection { get; set; } = Direction.Right;
 
@@ -18,8 +20,6 @@ public class ProjectileController : MonoBehaviour
    }
 
    private SpriteRenderer mSpriteRenderer;
-   private DateTime mTimeFired;
-   private bool mIsDoneFiring;
 
    public static float skProjectileScale = 0.2967267f;
 
@@ -31,51 +31,47 @@ public class ProjectileController : MonoBehaviour
       {
          mSpriteRenderer.flipX = true;
       }
-
-      mTimeFired = DateTime.Now;
-   }
-
-   // Update is called once per frame
-   protected void Update()
-   {
-      double secondsAlive = DateTime.Now.Subtract(mTimeFired).TotalSeconds;
-      if (secondsAlive >= SecondsUntilDeath)
-      {
-         mIsDoneFiring = true;
-         Destroy(gameObject);
-      }
    }
 
    protected void OnCollisionEnter2D(Collision2D collision)
    {
-      if (collision.gameObject.tag.Equals("enemy", StringComparison.OrdinalIgnoreCase))
+      bool isEnemy = collision.gameObject.tag.Equals("enemy", StringComparison.OrdinalIgnoreCase);
+      bool isCollisionTerrain = collision.gameObject.tag.Equals("levelcollision", StringComparison.OrdinalIgnoreCase);
+
+      if (isEnemy || isCollisionTerrain)
       {
-         Debug.Log("collided!");
+         HandleCollisionEffects();
       }
    }
 
    protected void FixedUpdate()
    {
-      if (!mIsDoneFiring)
+      float xPosition = transform.position.x;
+      float spin = SpinVelocity;
+
+      if (FireDirection == Direction.Left)
       {
-         float xPosition = transform.position.x;
-         float spin = SpinVelocity;
-
-         if (FireDirection == Direction.Left)
-         {
-            spin = -SpinVelocity * Time.deltaTime;
-            xPosition += (Velocity * Time.deltaTime);
-         }
-         else
-         {
-            spin = SpinVelocity * Time.deltaTime;
-            xPosition -= (Velocity * Time.deltaTime);
-         }
-
-         transform.Rotate(Vector3.forward * spin);
-         transform.position = new Vector3(xPosition,
-                                          transform.position.y,
-                                          transform.position.z);
+         spin = -SpinVelocity* Time.deltaTime;
+         xPosition += (Velocity * Time.deltaTime);
       }
+      else
+      {
+         spin = SpinVelocity* Time.deltaTime;
+         xPosition -= (Velocity * Time.deltaTime);
+      }
+
+      transform.Rotate(Vector3.forward * spin);
+      transform.position = new Vector3(xPosition,
+                                       transform.position.y,
+                                       transform.position.z);
+   }
+
+   private void HandleCollisionEffects()
+   {
+      GameObject boom = Instantiate(BoomEffectPrefab);
+      boom.transform.position = gameObject.transform.position;
+
+      GameSimulation.Instance.AudioSource.PlayOneShot(CollisionAudio);
+      Destroy(gameObject);
    }
 }

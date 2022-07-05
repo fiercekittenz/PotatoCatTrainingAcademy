@@ -19,10 +19,14 @@ public class GameSimulation : MonoBehaviour
 
    public bool InGameMenuIsOpen { get; set; } = false;
 
+   public AudioSource AudioSource { get; private set; }
+
    // Start is called before the first frame update
    void Awake()
    {
       Instance = this;
+
+      AudioSource = GetComponent<AudioSource>();
 
       // Default start the volume at 25% - think of the ears!
       float currentVolume = PlayerPrefs.GetFloat("Volume");
