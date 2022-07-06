@@ -10,12 +10,16 @@ namespace PotatoCat.Events
       public Animator Animator;
       public GameObject Fart;
       public PlayerComponent Player;
+      public bool FromJump;
 
       public override void Execute()
       {
          if (Player != null)
          { 
-            Player.Bounce(5);
+            if (FromJump)
+            { 
+               Player.Bounce(6);
+            }
 
             // Only play this death sound if the player caused the damage, not the projectile. The 
             // projectile has its own death sound that will collide with this one.

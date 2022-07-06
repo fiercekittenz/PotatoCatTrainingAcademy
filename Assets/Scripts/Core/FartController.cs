@@ -16,12 +16,12 @@ public class FartController : MonoBehaviour
    public float MaxPathingSpeed = 7;
 
    [HideInInspector]
-   private Animator mAnimator;
-   public Collider2D Collider2d;
+   private Animator mAnimator { get; set; }
+   public Collider2D Collider2d { get; set; }
    public Bounds Bounds => Collider2d.bounds;
 
    private Mover mMover;
-   private bool mMovingTowardPointB = true;
+   private bool mIsDying = false;
 
    private void Awake()
    {
@@ -39,11 +39,21 @@ public class FartController : MonoBehaviour
 
    private void OnCollisionEnter2D(Collision2D collision)
    {
+      if (mIsDying)
+      {
+         // Do not handle anymore collision while dying.
+         return;
+      }
+
       if (collision.gameObject.tag.Equals("projectiledamage", StringComparison.OrdinalIgnoreCase))
       {
+         mIsDying = true;
+         Collider2d.enabled = false;
+
          var ev = Simulation.Schedule<FartDeath>();
          ev.Animator = mAnimator;
          ev.Fart = gameObject;
+         ev.FromJump = false;
       }
       else if (collision.gameObject.tag.Equals("player", StringComparison.OrdinalIgnoreCase))
       {
@@ -53,10 +63,14 @@ public class FartController : MonoBehaviour
             bool willHurtEnemy = playerComponent.Bounds.center.y >= Bounds.max.y;
             if (willHurtEnemy)
             {
+               mIsDying = true;
+               Collider2d.enabled = false;
+
                var ev = Simulation.Schedule<FartDeath>();
                ev.Player = playerComponent;
                ev.Animator = mAnimator;
                ev.Fart = gameObject;
+               ev.FromJump = true;
             }
             else
             {
@@ -68,7 +82,7 @@ public class FartController : MonoBehaviour
 
    private void FixedUpdate()
    {
-      if (MovesBetweenPoints)
+      if (MovesBetweenPoints && !mIsDying)
       {
          if (mMover == null)
          {
