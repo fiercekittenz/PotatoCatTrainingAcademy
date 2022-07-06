@@ -4,15 +4,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
-public class KillingFloorController : MonoBehaviour
+namespace PotatoCat.Gameplay
 {
-   private void OnTriggerEnter2D(Collider2D collision)
+   [RequireComponent(typeof(Collider2D))]
+   public class KillingFloorController : MonoBehaviour
    {
-      var player = collision.gameObject.GetComponent<PlayerComponent>();
-      if (player != null)
+      private void OnTriggerEnter2D(Collider2D collision)
       {
-         Simulation.Schedule<PlayerDeath>().Player = player;
+         var player = collision.gameObject.GetComponent<PlayerComponent>();
+         if (player != null)
+         {
+            player.ControlEnabled = false;
+            Simulation.Schedule<PlayerDeath>(0.5f).Player = player;
+         }
       }
    }
 }

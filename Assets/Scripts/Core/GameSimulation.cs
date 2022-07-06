@@ -11,7 +11,12 @@ public class GameSimulation : MonoBehaviour
 {
    public Cinemachine.CinemachineVirtualCamera VirtualCamera;
 
+   public GameObject PlayerReference;
+
    public GameObject InGameMenu;
+   public GameObject InformationBoxPanel;
+   public TextMeshProUGUI PraisesText;
+   public TextMeshProUGUI SocksText;
 
    public static GameSimulation Instance { get; private set; }
 
@@ -21,12 +26,15 @@ public class GameSimulation : MonoBehaviour
 
    public AudioSource AudioSource { get; private set; }
 
+   protected PlayerComponent mPlayerComponentRef { get; private set; }
+
    // Start is called before the first frame update
    void Awake()
    {
       Instance = this;
 
       AudioSource = GetComponent<AudioSource>();
+      mPlayerComponentRef = PlayerReference.GetComponent<PlayerComponent>();
 
       // Default start the volume at 25% - think of the ears!
       float currentVolume = PlayerPrefs.GetFloat("Volume");
@@ -62,5 +70,23 @@ public class GameSimulation : MonoBehaviour
          InGameMenu.SetActive(true);
          InGameMenuIsOpen = true;
       }
+   }
+
+   public void AddSocks(int amount)
+   {
+      int currentValue = Int32.Parse(SocksText.text);
+      SocksText.text = $"{currentValue + amount}";
+   }
+
+   public void AddPraises(int amount)
+   {
+      int currentValue = Int32.Parse(PraisesText.text);
+      PraisesText.text = $"{currentValue + amount}";
+   }
+
+   public void CloseInformationPanel()
+   {      
+      InformationBoxPanel.SetActive(false);
+      mPlayerComponentRef.ControlEnabled = true;
    }
 }
