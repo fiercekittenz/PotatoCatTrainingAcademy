@@ -11,15 +11,24 @@ namespace PotatoCat.Events
 
       public override void Execute()
       {
-         AudioSource source = Player.GetComponent<AudioSource>();
-         if (source != null && Player.Death != null)
+         if (Player != null)
          {
-            source.PlayOneShot(Player.Death);
-         }
+            Player.ControlEnabled = false;
 
-         Vector3 spawnPointPosition = Player.SpawnLocation.transform.position;
-         Player.transform.position = spawnPointPosition;
-         Player.ControlEnabled = true;
+            if (Player.AudioSource != null &&
+                Player.HealthComponent != null &&
+                Player.HealthComponent.DeathSound != null)
+            {
+               Player.AudioSource.PlayOneShot(Player.HealthComponent.DeathSound);
+            }
+
+            if (Player.Animator != null)
+            {
+               Player.Animator.SetBool("IsDead", true);
+            }
+
+            Simulation.Schedule<PlayerRespawn>(2.0f).Player = Player;
+         }
       }
    }
 }

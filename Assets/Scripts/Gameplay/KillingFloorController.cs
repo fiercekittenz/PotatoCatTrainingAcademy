@@ -15,7 +15,7 @@ namespace PotatoCat.Gameplay
          if (player != null)
          {
             player.ControlEnabled = false;
-            Simulation.Schedule<PlayerDeath>(0.5f).Player = player;
+            Simulation.Schedule<PlayerDeath>().Player = player;
          }
       }
    }

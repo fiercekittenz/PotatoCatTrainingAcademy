@@ -11,44 +11,47 @@ public class PlayerComponent : KinematicObject
 
    public GameObject SpawnLocation;
    public GameObject ProjectilePrefab;
-   public AudioClip Damage;
-   public AudioClip Death;
    public AudioClip Shooting;
    public int MillisecondsBetweenProjectiles = 500;
-
    public float MaxSpeed = 7;
    public float JumpTakeOffSpeed = 7;
 
+   [HideInInspector]
    public JumpState CurrentJumpState = JumpState.Grounded;
-   private bool StopJump;
    public Collider2D Collider2d;
    public AudioSource AudioSource;
+   public HealthComponent HealthComponent;
+   public Animator Animator;
    public bool ControlEnabled = true;
+   public Bounds Bounds => Collider2d.bounds;
 
    #endregion
 
    #region Internal Properties
 
-   bool mJump;
-   Vector2 mMove;
-   SpriteRenderer mSpriteRenderer;
-   internal Animator mAnimator;
-
+   [HideInInspector]
+   private bool mStopJump;
+   private bool mJump;
+   private Vector2 mMove;
+   private SpriteRenderer mSpriteRenderer;
    private DateTime mLastTimeProjectileFired;
+
+   #endregion
+
+   #region Statics
 
    public static float skJumpModifier = 1.5f;
    public static float skJumpDeceleration = 0.5f;
-
-   public Bounds Bounds => Collider2d.bounds;
 
    #endregion
 
    private void Awake()
    {
       mSpriteRenderer = GetComponent<SpriteRenderer>();
-      mAnimator = GetComponent<Animator>();
+      Animator = GetComponent<Animator>();
       AudioSource = GetComponent<AudioSource>();
       Collider2d = GetComponent<Collider2D>();
+      HealthComponent = GetComponent<HealthComponent>();
    }
 
    protected override void Update()
@@ -66,7 +69,7 @@ public class PlayerComponent : KinematicObject
          }
          else if (Input.GetButtonUp("Jump"))
          {
-            StopJump = true;
+            mStopJump = true;
          }
 
          //
@@ -95,7 +98,7 @@ public class PlayerComponent : KinematicObject
       }
       else
       {
-         mAnimator.SetBool("Walking", false);
+         Animator.SetBool("Walking", false);
          mMove.x = 0;
       }
 
@@ -111,7 +114,7 @@ public class PlayerComponent : KinematicObject
          case JumpState.PrepareToJump:
             CurrentJumpState = JumpState.Jumping;
             mJump = true;
-            StopJump = false;
+            mStopJump = false;
             break;
          case JumpState.Jumping:
             if (!IsGrounded)
@@ -140,9 +143,9 @@ public class PlayerComponent : KinematicObject
          velocity.y = JumpTakeOffSpeed * skJumpModifier;
          mJump = false;
       }
-      else if (StopJump)
+      else if (mStopJump)
       {
-         StopJump = false;
+         mStopJump = false;
          if (velocity.y > 0)
          {
             velocity.y = velocity.y * skJumpDeceleration;
@@ -158,18 +161,18 @@ public class PlayerComponent : KinematicObject
          mSpriteRenderer.flipX = true;
       }
 
-      mAnimator.SetBool("grounded", IsGrounded);
-      mAnimator.SetFloat("velocityX", Mathf.Abs(velocity.x) / MaxSpeed);
+      Animator.SetBool("grounded", IsGrounded);
+      Animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / MaxSpeed);
 
       targetVelocity = mMove * MaxSpeed;
 
       if (targetVelocity.x == 0.0f)
       {
-         mAnimator.SetBool("Walking", false);
+         Animator.SetBool("Walking", false);
       }
       else
       {
-         mAnimator.SetBool("Walking", true);
+         Animator.SetBool("Walking", true);
       }
    }
 
