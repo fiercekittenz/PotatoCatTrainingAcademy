@@ -16,6 +16,8 @@ namespace PotatoCat.Events
             Player.Animator.SetBool("IsDead", false);
          }
 
+         Player.HealthComponent.Reset();
+
          Vector3 spawnPointPosition = Player.SpawnLocation.transform.position;
          Player.transform.position = spawnPointPosition;
          Player.ControlEnabled = true;

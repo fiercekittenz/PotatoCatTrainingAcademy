@@ -15,6 +15,7 @@ namespace PotatoCat.Gameplay
          if (player != null)
          {
             player.ControlEnabled = false;
+            player.HealthComponent.TakeDamage(player.HealthComponent.CurrentHealth);
             Simulation.Schedule<PlayerDeath>().Player = player;
          }
       }

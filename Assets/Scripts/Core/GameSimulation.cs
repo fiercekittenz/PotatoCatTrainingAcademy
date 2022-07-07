@@ -1,5 +1,6 @@
 using PotatoCat.Core;
 using PotatoCat.Events;
+using PotatoCat.Gameplay;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,26 +10,50 @@ using UnityEngine.SceneManagement;
 
 public class GameSimulation : MonoBehaviour
 {
-   public Cinemachine.CinemachineVirtualCamera VirtualCamera;
+   //
+   // Game Object References
+   //
 
    public GameObject PlayerReference;
+
+   //
+   // GUI References
+   //
 
    public GameObject InGameMenu;
    public GameObject InformationBoxPanel;
    public TextMeshProUGUI PraisesText;
    public TextMeshProUGUI SocksText;
+   public Cinemachine.CinemachineVirtualCamera VirtualCamera;
+
+   //
+   // Static Instance to the Game's Simulation (this)
+   //
 
    public static GameSimulation Instance { get; private set; }
 
-   public static float skDefaultVolume = 0.1f;
+   //
+   // Publicly Accessible Components/Variables
+   //
 
    public bool InGameMenuIsOpen { get; set; } = false;
-
    public AudioSource AudioSource { get; private set; }
 
-   protected PlayerComponent mPlayerComponentRef { get; private set; }
+   //
+   // Static Values
+   //
 
-   // Start is called before the first frame update
+   public static float skDefaultVolume = 0.1f;
+
+   //
+   // Private Variables
+   //
+
+   private PlayerComponent mPlayerComponentRef { get; set; }
+
+   /// <summary>
+   /// First method called when the simulation is created.
+   /// </summary>
    void Awake()
    {
       Instance = this;

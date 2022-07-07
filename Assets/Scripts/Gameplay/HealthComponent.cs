@@ -1,3 +1,5 @@
+using PotatoCat.Core;
+using PotatoCat.Events;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +15,9 @@ namespace PotatoCat.Gameplay
       public AudioClip DamagedSound;
 
       [HideInInspector]
-      private int mCurrentHealth = 0;
+      public int CurrentHealth { get; private set; } = 0;
+      private HeartMeterComponent HeartMeterComponent { get; set; }
+      private PlayerComponent PlayerComponent { get; set; }
 
       /// <summary>
       /// Deals damage to the game object. Returns if the object should be considered dead or not.
@@ -22,12 +26,19 @@ namespace PotatoCat.Gameplay
       /// <returns>If the game object is dead after taking damage.</returns>
       public bool TakeDamage(int amount)
       {
-         mCurrentHealth -= amount;
-         if (mCurrentHealth < 0)
+         CurrentHealth = Math.Clamp(CurrentHealth - amount, 0, MaxHealth);
+         UpdateHeartMeter();
+
+         if (CurrentHealth <= 0)
          {
             if (DeathSound != null)
             { 
                GameSimulation.Instance.AudioSource.PlayOneShot(DeathSound);
+            }
+
+            if (PlayerComponent != null)
+            { 
+               Simulation.Schedule<PlayerDeath>().Player = PlayerComponent;
             }
 
             return true;
@@ -45,7 +56,8 @@ namespace PotatoCat.Gameplay
 
       public void Heal(int amount)
       {
-         mCurrentHealth = Math.Clamp(mCurrentHealth + amount, 0, MaxHealth);
+         CurrentHealth = Math.Clamp(CurrentHealth + amount, 0, MaxHealth);
+         UpdateHeartMeter();
 
          if (HealingSound != null)
          { 
@@ -53,14 +65,28 @@ namespace PotatoCat.Gameplay
          }
       }
 
+      private void UpdateHeartMeter()
+      {
+         if (HeartMeterComponent != null)
+         {
+            HeartMeterComponent.UpdateDisplay(CurrentHealth);
+         }
+      }
+
       public void Reset()
       {
-         mCurrentHealth = MaxHealth;
+         CurrentHealth = MaxHealth;
+         UpdateHeartMeter();
       }
 
       private void Awake()
       {
-         mCurrentHealth = MaxHealth;
+         CurrentHealth = MaxHealth;
+
+         HeartMeterComponent = gameObject.GetComponentInParent<HeartMeterComponent>();
+         PlayerComponent = gameObject.GetComponentInParent<PlayerComponent>();
+
+         UpdateHeartMeter();
       }
    }
 }

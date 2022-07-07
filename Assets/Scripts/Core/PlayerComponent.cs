@@ -7,7 +7,9 @@ using UnityEngine;
 
 public class PlayerComponent : KinematicObject
 {
-   #region Public Editor Properties
+   //
+   // Editor Exposed Properties
+   //
 
    public GameObject SpawnLocation;
    public GameObject ProjectilePrefab;
@@ -16,35 +18,39 @@ public class PlayerComponent : KinematicObject
    public float MaxSpeed = 7;
    public float JumpTakeOffSpeed = 7;
 
+   //
+   // Public Properties (Not in the editor)
+   //
+
    [HideInInspector]
    public JumpState CurrentJumpState = JumpState.Grounded;
-   public Collider2D Collider2d;
-   public AudioSource AudioSource;
-   public HealthComponent HealthComponent;
-   public Animator Animator;
-   public bool ControlEnabled = true;
+   public Collider2D Collider2d { get; private set; }
+   public AudioSource AudioSource { get; private set; }
+   public HealthComponent HealthComponent { get; private set; }
+   public Animator Animator { get; private set; }
+   public bool ControlEnabled { get; set; } = true;
    public Bounds Bounds => Collider2d.bounds;
 
-   #endregion
+   //
+   // Private Properties
+   //
 
-   #region Internal Properties
-
-   [HideInInspector]
    private bool mStopJump;
    private bool mJump;
    private Vector2 mMove;
    private SpriteRenderer mSpriteRenderer;
    private DateTime mLastTimeProjectileFired;
 
-   #endregion
-
-   #region Statics
+   // 
+   // Static Variables
+   //
 
    public static float skJumpModifier = 1.5f;
    public static float skJumpDeceleration = 0.5f;
 
-   #endregion
-
+   /// <summary>
+   /// Instantiation of the player component and referenced components.
+   /// </summary>
    private void Awake()
    {
       mSpriteRenderer = GetComponent<SpriteRenderer>();
@@ -119,14 +125,12 @@ public class PlayerComponent : KinematicObject
          case JumpState.Jumping:
             if (!IsGrounded)
             {
-               //Schedule<PlayerJumped>().player = this;
                CurrentJumpState = JumpState.InFlight;
             }
             break;
          case JumpState.InFlight:
             if (IsGrounded)
             {
-               //Schedule<PlayerLanded>().player = this;
                CurrentJumpState = JumpState.Landed;
             }
             break;

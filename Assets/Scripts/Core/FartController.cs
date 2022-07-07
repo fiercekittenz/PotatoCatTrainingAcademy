@@ -74,7 +74,7 @@ public class FartController : MonoBehaviour
             }
             else
             {
-               Simulation.Schedule<PlayerDeath>().Player = playerComponent;
+               playerComponent.HealthComponent.TakeDamage(1);
             }
          }
       }
