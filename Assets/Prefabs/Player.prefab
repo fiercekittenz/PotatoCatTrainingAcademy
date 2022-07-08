@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1871838701815490726}
+  - component: {fileID: 7027852307129100177}
   - component: {fileID: 1871838701815490727}
   - component: {fileID: 1871838701815490744}
   - component: {fileID: 1871838701815490725}
@@ -22,21 +22,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1871838701815490726
-Transform:
+--- !u!224 &7027852307129100177
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1871838701815490745}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.52, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.50360394, y: 0.50360394, z: 0.50360394}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.357, y: 2.539}
+  m_SizeDelta: {x: 0.72, y: 1.14}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!70 &1871838701815490727
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -90,16 +95,9 @@ MonoBehaviour:
   gravityModifier: 1
   velocity: {x: 0.25, y: 0.7}
   SpawnLocation: {fileID: 0}
-  ProjectilePrefab: {fileID: 0}
-  Damage: {fileID: 8300000, guid: 2c5e2563b67d2ad42a16aaf1fda03c83, type: 3}
-  Death: {fileID: 8300000, guid: b7f0194299fe76745942d810a1cdfd08, type: 3}
-  Shooting: {fileID: 0}
   MaxSpeed: 7
   JumpTakeOffSpeed: 7
   CurrentJumpState: 0
-  Collider2d: {fileID: 0}
-  AudioSource: {fileID: 0}
-  ControlEnabled: 1
 --- !u!212 &7790311862645628781
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -12,9 +12,6 @@ public class PlayerComponent : KinematicObject
    //
 
    public GameObject SpawnLocation;
-   public GameObject ProjectilePrefab;
-   public AudioClip Shooting;
-   public int MillisecondsBetweenProjectiles = 500;
    public float MaxSpeed = 7;
    public float JumpTakeOffSpeed = 7;
 
@@ -27,19 +24,28 @@ public class PlayerComponent : KinematicObject
    public Collider2D Collider2d { get; private set; }
    public AudioSource AudioSource { get; private set; }
    public HealthComponent HealthComponent { get; private set; }
+   public ProjectileUserComponent ProjectileUserComponent { get; private set; }
    public Animator Animator { get; private set; }
-   public bool ControlEnabled { get; set; } = true;
    public Bounds Bounds => Collider2d.bounds;
+
+   public bool ControlEnabled
+   {
+      get { return mControlEnabled; }
+      set
+      {
+         mControlEnabled = value;
+      }
+   }
 
    //
    // Private Properties
    //
 
+   private bool mControlEnabled = true;
    private bool mStopJump;
    private bool mJump;
    private Vector2 mMove;
    private SpriteRenderer mSpriteRenderer;
-   private DateTime mLastTimeProjectileFired;
 
    // 
    // Static Variables
@@ -58,6 +64,7 @@ public class PlayerComponent : KinematicObject
       AudioSource = GetComponent<AudioSource>();
       Collider2d = GetComponent<Collider2D>();
       HealthComponent = GetComponent<HealthComponent>();
+      ProjectileUserComponent = GetComponent<ProjectileUserComponent>();
    }
 
    protected override void Update()
@@ -78,28 +85,9 @@ public class PlayerComponent : KinematicObject
             mStopJump = true;
          }
 
-         //
-         // Handle Projectile
-         //
-
-         double msSinceLastProjectile = DateTime.Now.Subtract(mLastTimeProjectileFired).TotalMilliseconds;
-         if (Input.GetKey(KeyCode.E) && msSinceLastProjectile >= MillisecondsBetweenProjectiles)
+         if (Input.GetKey(KeyCode.E))
          {
-            AudioSource.PlayOneShot(Shooting);
-
-            mLastTimeProjectileFired = DateTime.Now;
-            var projectile = Instantiate(ProjectilePrefab);
-            Vector3 placement = new Vector3(transform.position.x + 0.2f, transform.position.y + 0.1f, transform.position.z);
-            projectile.transform.position = placement;
-
-            if (!mSpriteRenderer.flipX)
-            {
-               ProjectileController projectileController = projectile.GetComponent<ProjectileController>();
-               if (projectileController != null)
-               { 
-                  projectileController.FireDirection = ProjectileController.Direction.Left;
-               }
-            }
+            ProjectileUserComponent.Fire();
          }
       }
       else
@@ -159,10 +147,12 @@ public class PlayerComponent : KinematicObject
       if (mMove.x > 0.01f)
       {
          mSpriteRenderer.flipX = false;
+         ProjectileUserComponent.FireDirection = ProjectileUserComponent.FireDirectionValues.Left;
       }
       else if (mMove.x < -0.01f)
       { 
          mSpriteRenderer.flipX = true;
+         ProjectileUserComponent.FireDirection = ProjectileUserComponent.FireDirectionValues.Right;
       }
 
       Animator.SetBool("grounded", IsGrounded);

@@ -68,6 +68,13 @@ namespace PotatoCat.Gameplay
       {
          GameObject boom = Instantiate(BoomEffectPrefab);
          boom.transform.position = gameObject.transform.position;
+         
+         SpriteRenderer spriteRenderer = boom.GetComponent<SpriteRenderer>();
+         if (spriteRenderer != null)
+         {
+            spriteRenderer.sortingLayerName = "Foreground";
+            spriteRenderer.sortingOrder = 999;
+         }
 
          GameSimulation.Instance.AudioSource.PlayOneShot(CollisionAudio);
          Destroy(gameObject);

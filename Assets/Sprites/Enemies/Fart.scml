@@ -2,6 +2,7 @@
 <spriter_data scml_version="1.0" generator="BrashMonkey Spriter" generator_version="r11">
     <folder id="0">
         <file id="0" name="kittenzFart_x112.png" width="112" height="112" pivot_x="0" pivot_y="1"/>
+        <file id="1" name="DiernaGhost.png" width="112" height="112" pivot_x="0.5" pivot_y="0.5"/>
     </folder>
     <entity id="0" name="fart">
         <animation id="0" name="die" length="1000" interval="100">
@@ -15,10 +16,10 @@
             </mainline>
             <timeline id="0" name="kittenzFart_x112_000">
                 <key id="0" spin="0">
-                    <object folder="0" file="0" x="-50" y="51"/>
+                    <object folder="0" file="0" x="-50" y="51" angle="0"/>
                 </key>
                 <key id="1" time="1000" spin="0">
-                    <object folder="0" file="0" x="-50" y="51" a="0"/>
+                    <object folder="0" file="0" x="-50" y="51" angle="0" a="0"/>
                 </key>
             </timeline>
         </animation>
@@ -37,6 +38,44 @@
                 </key>
                 <key id="1" time="999" spin="0">
                     <object folder="0" file="0" x="-50" y="99" angle="0"/>
+                </key>
+            </timeline>
+        </animation>
+    </entity>
+    <entity id="1" name="ghost">
+        <animation id="0" name="idle" length="3000" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+                <key id="1" time="1500">
+                    <object_ref id="0" timeline="0" key="1" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="DiernaGhost">
+                <key id="0" spin="0">
+                    <object folder="0" file="1" x="2" y="5" angle="0" scale_x="-1"/>
+                </key>
+                <key id="1" time="1500" spin="0">
+                    <object folder="0" file="1" x="2" y="27" angle="0" scale_x="-1"/>
+                </key>
+            </timeline>
+        </animation>
+        <animation id="1" name="death" length="1000" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+                <key id="1" time="1000">
+                    <object_ref id="0" timeline="0" key="1" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="DiernaGhost_000">
+                <key id="0" spin="0">
+                    <object folder="0" file="1" x="-1" y="8" angle="0" scale_x="-1"/>
+                </key>
+                <key id="1" time="1000" spin="0">
+                    <object folder="0" file="1" x="-1" y="8" angle="0" scale_x="-1" a="0"/>
                 </key>
             </timeline>
         </animation>

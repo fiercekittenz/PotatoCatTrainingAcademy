@@ -11,7 +11,6 @@ namespace PotatoCat.Gameplay
    {
       public int MaxHealth = 1;
       public AudioClip DeathSound;
-      public AudioClip HealingSound;
       public AudioClip DamagedSound;
 
       [HideInInspector]
@@ -59,10 +58,8 @@ namespace PotatoCat.Gameplay
          CurrentHealth = Math.Clamp(CurrentHealth + amount, 0, MaxHealth);
          UpdateHeartMeter();
 
-         if (HealingSound != null)
-         { 
-            GameSimulation.Instance.AudioSource.PlayOneShot(HealingSound);
-         }
+         // Do not play a sound. Each item may make the player say or do
+         // something special on a heal bonus.
       }
 
       private void UpdateHeartMeter()

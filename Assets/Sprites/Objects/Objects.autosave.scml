@@ -3,6 +3,7 @@
     <folder id="0">
         <file id="0" name="kittenzSock_x112.png" width="112" height="112" pivot_x="0.5" pivot_y="0.5"/>
         <file id="1" name="kittenzWorship.png" width="112" height="112" pivot_x="0" pivot_y="1"/>
+        <file id="2" name="kittenzWhip_x112.png" width="112" height="112" pivot_x="0.5" pivot_y="0.5"/>
     </folder>
     <entity id="0" name="sock">
         <animation id="0" name="idle" length="2000" interval="100">
@@ -16,10 +17,10 @@
             </mainline>
             <timeline id="0" name="kittenzSock_x112">
                 <key id="0">
-                    <object folder="0" file="0" x="4" y="17" angle="338.83874" scale_x="1" scale_y="1"/>
+                    <object folder="0" file="0" x="4" y="17" angle="338.83874"/>
                 </key>
                 <key id="1" time="999" spin="-1">
-                    <object folder="0" file="0" x="4" y="17" angle="23.670538" scale_x="1" scale_y="1"/>
+                    <object folder="0" file="0" x="4" y="17" angle="23.670538"/>
                 </key>
             </timeline>
         </animation>
@@ -36,10 +37,30 @@
             </mainline>
             <timeline id="0" name="kittenzWorship">
                 <key id="0" spin="0">
-                    <object folder="0" file="1" x="-51" y="67"/>
+                    <object folder="0" file="1" x="-51" y="67" angle="0"/>
                 </key>
                 <key id="1" time="1000" spin="0">
-                    <object folder="0" file="1" x="-51" y="92"/>
+                    <object folder="0" file="1" x="-51" y="92" angle="0"/>
+                </key>
+            </timeline>
+        </animation>
+    </entity>
+    <entity id="2" name="dolewhip">
+        <animation id="0" name="idle" length="2000" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="0" key="0" z_index="0"/>
+                </key>
+                <key id="1" time="1000">
+                    <object_ref id="0" timeline="0" key="1" z_index="0"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="kittenzWhip_x112">
+                <key id="0" spin="0">
+                    <object folder="0" file="2" x="3" y="15"/>
+                </key>
+                <key id="1" time="1000" spin="0">
+                    <object folder="0" file="2" x="3" y="15" scale_x="0.814159" scale_y="0.814159"/>
                 </key>
             </timeline>
         </animation>
