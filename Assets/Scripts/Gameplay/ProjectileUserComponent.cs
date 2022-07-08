@@ -14,7 +14,7 @@ namespace PotatoCat.Gameplay
    {
       public GameObject ProjectilePrefab;
       public AudioClip Shooting;
-      public FireDirectionValues FireDirection;
+      public FireDirectionValues FireDirection = FireDirectionValues.Right;
       public int MillisecondsBetweenProjectiles = 500;
       public float ProjectileDistanceFromEntity = 1.0f;
 

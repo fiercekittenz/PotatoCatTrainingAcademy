@@ -17,13 +17,15 @@ namespace PotatoCat.Gameplay
       public int CurrentHealth { get; private set; } = 0;
       private HeartMeterComponent HeartMeterComponent { get; set; }
       private PlayerComponent PlayerComponent { get; set; }
+      private BaseEnemy BaseEnemyComponent { get; set; }
 
       /// <summary>
       /// Deals damage to the game object. Returns if the object should be considered dead or not.
       /// </summary>
       /// <param name="amount">The amount of damage to deal.</param>
+      /// <param name="fromJump">If the damage is coming a jump above.</param>
       /// <returns>If the game object is dead after taking damage.</returns>
-      public bool TakeDamage(int amount)
+      public bool TakeDamage(int amount, bool fromJump = false)
       {
          CurrentHealth = Math.Clamp(CurrentHealth - amount, 0, MaxHealth);
          UpdateHeartMeter();
@@ -38,6 +40,10 @@ namespace PotatoCat.Gameplay
             if (PlayerComponent != null)
             { 
                Simulation.Schedule<PlayerDeath>().Player = PlayerComponent;
+            }
+            else if (BaseEnemyComponent != null)
+            {
+               BaseEnemyComponent.HandleDeath(fromJump);
             }
 
             return true;
@@ -82,6 +88,7 @@ namespace PotatoCat.Gameplay
 
          HeartMeterComponent = gameObject.GetComponentInParent<HeartMeterComponent>();
          PlayerComponent = gameObject.GetComponentInParent<PlayerComponent>();
+         BaseEnemyComponent = gameObject.GetComponentInParent<BaseEnemy>();
 
          UpdateHeartMeter();
       }

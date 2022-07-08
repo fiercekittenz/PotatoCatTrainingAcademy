@@ -5,25 +5,25 @@ using UnityEngine;
 
 namespace PotatoCat.Events
 {
-   public class FartDeath : Simulation.Event<FartDeath>
+   public class GhostDeath : Simulation.Event<GhostDeath>
    {
       public Animator Animator;
-      public GameObject Fart;
       public PlayerComponent Player;
+      public GameObject Ghost;
       public bool FromJump;
 
       public override void Execute()
       {
          if (Player != null)
-         { 
+         {
             if (FromJump)
-            { 
+            {
                Player.Bounce(6);
             }
          }
 
          Animator.SetBool("IsDying", true);
-         Object.Destroy(Fart, 0.833f);
+         Object.Destroy(Ghost, 0.833f);
       }
    }
 }

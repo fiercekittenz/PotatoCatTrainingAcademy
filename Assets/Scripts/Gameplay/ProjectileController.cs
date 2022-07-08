@@ -1,3 +1,4 @@
+using PotatoCat.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,9 +8,10 @@ namespace PotatoCat.Gameplay
 {
    public class ProjectileController : MonoBehaviour
    {
-      public int SecondsUntilDeath = 3;
+      public int MillisecondsUntilDeath = 3000;
       public float Velocity = 1.0f;
       public float SpinVelocity = -500;
+      public int DamageDealt = 1;
       public AudioClip CollisionAudio;
       public GameObject BoomEffectPrefab;
 
@@ -22,12 +24,11 @@ namespace PotatoCat.Gameplay
       }
 
       private SpriteRenderer mSpriteRenderer;
+      private DateTime mFiredTime;
 
-      public static float skProjectileScale = 0.2967267f;
-
-      // Start is called before the first frame update
-      protected void Start()
+      protected void Awake()
       {
+         mFiredTime = DateTime.Now;
          mSpriteRenderer = GetComponent<SpriteRenderer>();
          if (mSpriteRenderer != null && FireDirection == Direction.Right)
          {
@@ -37,46 +38,76 @@ namespace PotatoCat.Gameplay
 
       protected void OnCollisionEnter2D(Collision2D collision)
       {
+         bool isPlayer = collision.gameObject.tag.Equals("player", StringComparison.OrdinalIgnoreCase);
          bool isEnemy = collision.gameObject.tag.Equals("enemy", StringComparison.OrdinalIgnoreCase);
          bool isCollisionTerrain = collision.gameObject.tag.Equals("levelcollision", StringComparison.OrdinalIgnoreCase);
 
-         if (isEnemy || isCollisionTerrain)
+         if (isPlayer || isEnemy || isCollisionTerrain)
          {
             HandleCollisionEffects();
+         }
+
+         if (isEnemy)
+         {
+            BaseEnemy enemyComponent = collision.gameObject.GetComponent<BaseEnemy>();
+            if (enemyComponent != null)
+            {
+               enemyComponent.HealthComponentRef.TakeDamage(DamageDealt);
+            }
+         }
+         else if (isPlayer)
+         {
+            PlayerComponent player = collision.gameObject.GetComponent<PlayerComponent>();
+            player.HealthComponent.TakeDamage(DamageDealt);
          }
       }
 
       protected void FixedUpdate()
       {
-         float xPosition = transform.position.x;
-         if (FireDirection == Direction.Left)
+         double msSinceFired = DateTime.Now.Subtract(mFiredTime).TotalMilliseconds;
+         if (msSinceFired >= MillisecondsUntilDeath)
          {
-            xPosition += (Velocity * Time.deltaTime);
+            Destroy(gameObject);
          }
          else
-         {
-            xPosition -= (Velocity * Time.deltaTime);
-         }
+         { 
+            float xPosition = transform.position.x;
+            if (FireDirection == Direction.Left)
+            {
+               xPosition += (Velocity * Time.deltaTime);
+            }
+            else
+            {
+               xPosition -= (Velocity * Time.deltaTime);
+            }
 
-         transform.Rotate(Vector3.forward * SpinVelocity * Time.deltaTime);
-         transform.position = new Vector3(xPosition,
-                                          transform.position.y,
-                                          transform.position.z);
+            transform.Rotate(Vector3.forward * SpinVelocity * Time.deltaTime);
+            transform.position = new Vector3(xPosition,
+                                             transform.position.y,
+                                             transform.position.z);
+         }
       }
 
       private void HandleCollisionEffects()
       {
-         GameObject boom = Instantiate(BoomEffectPrefab);
-         boom.transform.position = gameObject.transform.position;
+         if (BoomEffectPrefab != null)
+         { 
+            GameObject boom = Instantiate(BoomEffectPrefab);
+            boom.transform.position = gameObject.transform.position;
          
-         SpriteRenderer spriteRenderer = boom.GetComponent<SpriteRenderer>();
-         if (spriteRenderer != null)
-         {
-            spriteRenderer.sortingLayerName = "Foreground";
-            spriteRenderer.sortingOrder = 999;
+            SpriteRenderer spriteRenderer = boom.GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null)
+            {
+               spriteRenderer.sortingLayerName = "Foreground";
+               spriteRenderer.sortingOrder = 999;
+            }
          }
 
-         GameSimulation.Instance.AudioSource.PlayOneShot(CollisionAudio);
+         if (CollisionAudio != null)
+         { 
+            GameSimulation.Instance.AudioSource.PlayOneShot(CollisionAudio);
+         }
+
          Destroy(gameObject);
       }
    }
