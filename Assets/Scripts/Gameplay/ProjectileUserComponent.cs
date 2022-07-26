@@ -12,6 +12,7 @@ namespace PotatoCat.Gameplay
    /// </summary>
    public class ProjectileUserComponent : MonoBehaviour
    {
+      public bool IsAutomaticFireOn = false;
       public GameObject ProjectilePrefab;
       public AudioClip Shooting;
       public FireDirectionValues FireDirection = FireDirectionValues.Right;
@@ -22,6 +23,7 @@ namespace PotatoCat.Gameplay
       private SpriteRenderer SpriteRendererRef { get; set; }
       private DateTime mLastTimeProjectileFired;
       private RectTransform mRectTransform;
+      private DateTime mTimeLastFired = DateTime.Now;
 
       public enum FireDirectionValues
       {
@@ -38,58 +40,73 @@ namespace PotatoCat.Gameplay
          Debug.Assert(mRectTransform != null);
       }
 
-      public void Fire()
+      public void Fire(bool forced = false)
       {
-         //
-         // Handle Projectile
-         //
-
-         double msSinceLastProjectile = DateTime.Now.Subtract(mLastTimeProjectileFired).TotalMilliseconds;
-         if (msSinceLastProjectile >= MillisecondsBetweenProjectiles)
+         if (forced || IsAutomaticFireOn)
          {
-            if (AudioSourceRef != null)
+            //
+            // Handle Projectile
+            //
+
+            double msSinceLastProjectile = DateTime.Now.Subtract(mLastTimeProjectileFired).TotalMilliseconds;
+            if (msSinceLastProjectile >= MillisecondsBetweenProjectiles)
             {
-               AudioSourceRef.PlayOneShot(Shooting);
-            }
-
-            // Flag the time the projectile was fired and create it.
-            mLastTimeProjectileFired = DateTime.Now;
-            var projectile = Instantiate(ProjectilePrefab);
-
-            // Set the sorting order so it flies topmost to all things except the entity.
-            SpriteRenderer projectileRenderer = projectile.GetComponent<SpriteRenderer>();
-            projectileRenderer.sortingLayerName = "Foreground";
-            projectileRenderer.sortingOrder = 999;
-
-            // Set the position for its starting point based on the entity firing.
-            float xPosition = 0.0f;
-            float yPosition = 0.0f;
-            float zPosition = transform.position.z;
-
-            if (SpriteRendererRef != null)
-            {
-               // Note: The manipulation of X is backwards from what you'd think. Subtraction to move it left,
-               //       addition to move it right. This is beyond bizarre, but I'm just letting it go.
-
-               yPosition = SpriteRendererRef.bounds.center.y;
-               xPosition = transform.position.x - (SpriteRendererRef.bounds.size.x / 2) - ProjectileDistanceFromEntity;
-
-               if (FireDirection == FireDirectionValues.Left)
+               if (AudioSourceRef != null)
                {
-                  xPosition = transform.position.x + (SpriteRendererRef.bounds.size.x / 2) + ProjectileDistanceFromEntity;
+                  AudioSourceRef.PlayOneShot(Shooting);
+               }
 
-                  ProjectileController projectileController = projectile.GetComponent<ProjectileController>();
-                  if (projectileController != null)
+               // Flag the time the projectile was fired and create it.
+               mLastTimeProjectileFired = DateTime.Now;
+               var projectile = Instantiate(ProjectilePrefab);
+
+               // Set the sorting order so it flies topmost to all things except the entity.
+               SpriteRenderer projectileRenderer = projectile.GetComponent<SpriteRenderer>();
+               projectileRenderer.sortingLayerName = "Foreground";
+               projectileRenderer.sortingOrder = 999;
+
+               // Set the position for its starting point based on the entity firing.
+               float xPosition = 0.0f;
+               float yPosition = 0.0f;
+               float zPosition = transform.position.z;
+
+               if (SpriteRendererRef != null)
+               {
+                  // Note: The manipulation of X is backwards from what you'd think. Subtraction to move it left,
+                  //       addition to move it right. This is beyond bizarre, but I'm just letting it go.
+
+                  yPosition = SpriteRendererRef.bounds.center.y;
+                  xPosition = transform.position.x - (SpriteRendererRef.bounds.size.x / 2) - ProjectileDistanceFromEntity;
+
+                  if (FireDirection == FireDirectionValues.Left)
                   {
-                     // The entity should control if it is facing left or right as it could be set via user input (player)
-                     // or AI (game-controlled entity).
-                     projectileController.FireDirection = ProjectileController.Direction.Left;
+                     xPosition = transform.position.x + (SpriteRendererRef.bounds.size.x / 2) + ProjectileDistanceFromEntity;
+
+                     ProjectileController projectileController = projectile.GetComponent<ProjectileController>();
+                     if (projectileController != null)
+                     {
+                        // The entity should control if it is facing left or right as it could be set via user input (player)
+                        // or AI (game-controlled entity).
+                        projectileController.FireDirection = ProjectileController.Direction.Left;
+                     }
                   }
                }
-            }
 
-            Vector3 placement = new Vector3(xPosition, yPosition, zPosition);
-            projectile.transform.position = placement;
+               Vector3 placement = new Vector3(xPosition, yPosition, zPosition);
+               projectile.transform.position = placement;
+            }
+         }
+      }
+
+      private void FixedUpdate()
+      {
+         if (IsAutomaticFireOn)
+         {
+            double msSinceLastFired = DateTime.Now.Subtract(mLastTimeProjectileFired).TotalMilliseconds;
+            if (msSinceLastFired >= MillisecondsBetweenProjectiles)
+            {
+               Fire();
+            }
          }
       }
    }

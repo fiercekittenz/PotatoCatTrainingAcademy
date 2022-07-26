@@ -164,6 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83eb9caad5b605f449557bbab8c67150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsAutomaticFireOn: 1
   ProjectilePrefab: {fileID: 2613773856900198419, guid: 15a1584bb7e568343a11b882a34d9b53, type: 3}
   Shooting: {fileID: 0}
   FireDirection: 1

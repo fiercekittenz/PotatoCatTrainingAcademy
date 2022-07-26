@@ -12,8 +12,6 @@ namespace PotatoCat.Core
       public ProjectileUserComponent ProjectileUserComponentRef { get; private set; }
       public Animator Animator { get; private set; }
 
-      private DateTime mTimeLastBooed = DateTime.Now;
-
       protected override void Awake()
       {
          base.Awake();
@@ -26,6 +24,8 @@ namespace PotatoCat.Core
       {
          base.HandleDeath(fromJump);
 
+         ProjectileUserComponentRef.IsAutomaticFireOn = false;
+
          Collider2d.enabled = false;
 
          var ev = Simulation.Schedule<GhostDeath>();
@@ -33,18 +33,6 @@ namespace PotatoCat.Core
          ev.Player = PlayerComponentRef;
          ev.Ghost = gameObject;
          ev.FromJump = fromJump;
-      }
-
-      private void FixedUpdate()
-      {
-         if (HealthComponentRef.CurrentHealth > 0)
-         { 
-            double msSinceLastBooed = DateTime.Now.Subtract(mTimeLastBooed).TotalMilliseconds;
-            if (msSinceLastBooed >= ProjectileUserComponentRef.MillisecondsBetweenProjectiles)
-            {
-               ProjectileUserComponentRef.Fire();
-            }
-         }
       }
    }
 }

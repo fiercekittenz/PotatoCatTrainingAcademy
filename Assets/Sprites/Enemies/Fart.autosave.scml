@@ -3,6 +3,11 @@
     <folder id="0">
         <file id="0" name="kittenzFart_x112.png" width="112" height="112" pivot_x="0" pivot_y="1"/>
         <file id="1" name="DiernaGhost.png" width="112" height="112" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="2" name="CottonSmiles.png" width="300" height="300" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="3" name="CottonSmiles_Body.png" width="205" height="129" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="4" name="CottonSmiles_Arm.png" width="105" height="48" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="5" name="CottonSmiles_Foot.png" width="113" height="58" pivot_x="0.5" pivot_y="0.5"/>
+        <file id="6" name="CottonSmiles_Mouth.png" width="55" height="43" pivot_x="0.5" pivot_y="0.5"/>
     </folder>
     <entity id="0" name="fart">
         <animation id="0" name="die" length="1000" interval="100">
@@ -76,6 +81,119 @@
                 </key>
                 <key id="1" time="1000" spin="0">
                     <object folder="0" file="1" x="-1" y="8" angle="0" scale_x="-1" a="0"/>
+                </key>
+            </timeline>
+        </animation>
+    </entity>
+    <entity id="2" name="cottonsmiles">
+        <animation id="0" name="idle" length="2000" interval="100">
+            <mainline>
+                <key id="0">
+                    <object_ref id="0" timeline="3" key="0" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="0" z_index="1"/>
+                    <object_ref id="2" timeline="1" key="0" z_index="2"/>
+                    <object_ref id="3" timeline="0" key="0" z_index="3"/>
+                    <object_ref id="4" timeline="5" key="0" z_index="4"/>
+                    <object_ref id="5" timeline="4" key="0" z_index="5"/>
+                    <object_ref id="6" timeline="6" key="0" z_index="6"/>
+                </key>
+                <key id="1" time="500">
+                    <object_ref id="0" timeline="3" key="0" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="0" z_index="1"/>
+                    <object_ref id="2" timeline="1" key="0" z_index="2"/>
+                    <object_ref id="3" timeline="0" key="0" z_index="3"/>
+                    <object_ref id="4" timeline="5" key="0" z_index="4"/>
+                    <object_ref id="5" timeline="4" key="0" z_index="5"/>
+                    <object_ref id="6" timeline="6" key="1" z_index="6"/>
+                </key>
+                <key id="2" time="750">
+                    <object_ref id="0" timeline="3" key="1" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="1" z_index="1"/>
+                    <object_ref id="2" timeline="1" key="0" z_index="2"/>
+                    <object_ref id="3" timeline="0" key="0" z_index="3"/>
+                    <object_ref id="4" timeline="5" key="0" z_index="4"/>
+                    <object_ref id="5" timeline="4" key="0" z_index="5"/>
+                    <object_ref id="6" timeline="6" key="1" z_index="6"/>
+                </key>
+                <key id="3" time="1000">
+                    <object_ref id="0" timeline="3" key="1" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="1" z_index="1"/>
+                    <object_ref id="2" timeline="1" key="0" z_index="2"/>
+                    <object_ref id="3" timeline="0" key="1" z_index="3"/>
+                    <object_ref id="4" timeline="5" key="1" z_index="4"/>
+                    <object_ref id="5" timeline="4" key="1" z_index="5"/>
+                    <object_ref id="6" timeline="6" key="2" z_index="6"/>
+                </key>
+                <key id="4" time="1250">
+                    <object_ref id="0" timeline="3" key="2" z_index="0"/>
+                    <object_ref id="1" timeline="2" key="2" z_index="1"/>
+                    <object_ref id="2" timeline="1" key="0" z_index="2"/>
+                    <object_ref id="3" timeline="0" key="1" z_index="3"/>
+                    <object_ref id="4" timeline="5" key="1" z_index="4"/>
+                    <object_ref id="5" timeline="4" key="1" z_index="5"/>
+                    <object_ref id="6" timeline="6" key="2" z_index="6"/>
+                </key>
+            </mainline>
+            <timeline id="0" name="CottonSmiles">
+                <key id="0" spin="-1">
+                    <object folder="0" file="2" x="5" y="58"/>
+                </key>
+                <key id="1" time="1000">
+                    <object folder="0" file="2" x="5" y="58" angle="354.355378"/>
+                </key>
+            </timeline>
+            <timeline id="1" name="CottonSmiles_Body">
+                <key id="0" spin="0">
+                    <object folder="0" file="3" x="2.5" y="-82.5"/>
+                </key>
+            </timeline>
+            <timeline id="2" name="LeftArm">
+                <key id="0">
+                    <object folder="0" file="4" x="82.5" y="-73"/>
+                </key>
+                <key id="1" time="750" spin="-1">
+                    <object folder="0" file="4" x="80.5" y="-68" angle="13.760785" scale_x="1" scale_y="1"/>
+                </key>
+                <key id="2" time="1250">
+                    <object folder="0" file="4" x="86.3" y="-83" angle="347.011061" scale_x="1" scale_y="1"/>
+                </key>
+            </timeline>
+            <timeline id="3" name="RightArm">
+                <key id="0">
+                    <object folder="0" file="4" x="-71.5" y="-73" angle="0" scale_x="-1"/>
+                </key>
+                <key id="1" time="750" spin="-1">
+                    <object folder="0" file="4" x="-76.5" y="-87" angle="23.347669" scale_x="-1"/>
+                </key>
+                <key id="2" time="1250">
+                    <object folder="0" file="4" x="-77.5" y="-66.4" angle="341.906876" scale_x="-1"/>
+                </key>
+            </timeline>
+            <timeline id="4" name="RightFoot">
+                <key id="0" spin="-1">
+                    <object folder="0" file="5" x="-50.731048" y="-152.714231" angle="11.911215" scale_x="1"/>
+                </key>
+                <key id="1" time="1000">
+                    <object folder="0" file="5" x="-50.731048" y="-152.714231" angle="351.950498" scale_x="1" scale_y="1"/>
+                </key>
+            </timeline>
+            <timeline id="5" name="LeftFoot">
+                <key id="0">
+                    <object folder="0" file="5" x="65.169493" y="-153.194664" angle="347.905243" scale_x="1"/>
+                </key>
+                <key id="1" time="1000" spin="-1">
+                    <object folder="0" file="5" x="65.169493" y="-153.194664" angle="14.726899"/>
+                </key>
+            </timeline>
+            <timeline id="6" name="CottonSmiles_Mouth">
+                <key id="0" spin="0">
+                    <object folder="0" file="6" x="7.5" y="-48.5"/>
+                </key>
+                <key id="1" time="500" spin="0">
+                    <object folder="0" file="6" x="3.5" y="-48.5" scale_y="0.431818"/>
+                </key>
+                <key id="2" time="1000" spin="0">
+                    <object folder="0" file="6" x="-0.5" y="-48.5"/>
                 </key>
             </timeline>
         </animation>

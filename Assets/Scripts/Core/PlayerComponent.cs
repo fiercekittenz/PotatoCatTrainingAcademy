@@ -87,7 +87,7 @@ public class PlayerComponent : KinematicObject
 
          if (Input.GetKey(KeyCode.E))
          {
-            ProjectileUserComponent.Fire();
+            ProjectileUserComponent.Fire(true);
          }
       }
       else
