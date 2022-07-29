@@ -9,15 +9,29 @@ namespace PotatoCat.Gameplay
 {
    public class HealthComponent : MonoBehaviour
    {
+      //
+      // Public Properties (Editor)
+      //
+
       public int MaxHealth = 1;
       public AudioClip DeathSound;
       public AudioClip DamagedSound;
+
+      //
+      // Hidden Properties
+      //
 
       [HideInInspector]
       public int CurrentHealth { get; private set; } = 0;
       private HeartMeterComponent HeartMeterComponent { get; set; }
       private PlayerComponent PlayerComponent { get; set; }
       private BaseEnemy BaseEnemyComponent { get; set; }
+
+      //
+      // Events
+      //
+
+      public event EventHandler OnHealthChanged;
 
       /// <summary>
       /// Deals damage to the game object. Returns if the object should be considered dead or not.
@@ -29,6 +43,7 @@ namespace PotatoCat.Gameplay
       {
          CurrentHealth = Math.Clamp(CurrentHealth - amount, 0, MaxHealth);
          UpdateHeartMeter();
+         OnHealthChanged?.Invoke(this, new EventArgs());
 
          if (CurrentHealth <= 0)
          {

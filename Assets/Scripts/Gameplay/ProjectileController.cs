@@ -14,8 +14,23 @@ namespace PotatoCat.Gameplay
       public int DamageDealt = 1;
       public AudioClip CollisionAudio;
       public GameObject BoomEffectPrefab;
+      public GameObject SummonerRef { get; set; } = null;
+      public Vector2 TargetLocation { get; set; } = Vector2.zero;
+      public bool ReadyToMove { get; set; } = false;
 
-      public Direction FireDirection { get; set; } = Direction.Right;
+      private Direction mFireDirection = Direction.Right;
+      public Direction FireDirection
+      {
+         get { return mFireDirection; }
+         set
+         {
+            mFireDirection = value;
+            if (mSpriteRenderer != null && FireDirection == Direction.Right)
+            {
+               mSpriteRenderer.flipX = true;
+            }
+         }
+      }
 
       public enum Direction
       {
@@ -30,10 +45,6 @@ namespace PotatoCat.Gameplay
       {
          mFiredTime = DateTime.Now;
          mSpriteRenderer = GetComponent<SpriteRenderer>();
-         if (mSpriteRenderer != null && FireDirection == Direction.Right)
-         {
-            mSpriteRenderer.flipX = true;
-         }
       }
 
       protected void OnCollisionEnter2D(Collision2D collision)
@@ -41,6 +52,13 @@ namespace PotatoCat.Gameplay
          bool isPlayer = collision.gameObject.tag.Equals("player", StringComparison.OrdinalIgnoreCase);
          bool isEnemy = collision.gameObject.tag.Equals("enemy", StringComparison.OrdinalIgnoreCase);
          bool isCollisionTerrain = collision.gameObject.tag.Equals("levelcollision", StringComparison.OrdinalIgnoreCase);
+
+         if (collision.gameObject == SummonerRef || 
+             (isEnemy && !SummonerRef.tag.Equals("player", StringComparison.OrdinalIgnoreCase)))
+         {
+            // Can't hit yourself or other enemies!
+            return;
+         }
 
          if (isPlayer || isEnemy || isCollisionTerrain)
          {
@@ -64,37 +82,33 @@ namespace PotatoCat.Gameplay
 
       protected void FixedUpdate()
       {
+         if (!ReadyToMove)
+         {
+            return;
+         }
+
+         // Handle a timed self-destruct.
          double msSinceFired = DateTime.Now.Subtract(mFiredTime).TotalMilliseconds;
          if (msSinceFired >= MillisecondsUntilDeath)
          {
             Destroy(gameObject);
          }
          else
-         { 
-            float xPosition = transform.position.x;
-            if (FireDirection == Direction.Left)
+         {
+            if (SpinVelocity != 0)
             {
-               xPosition += (Velocity * Time.deltaTime);
+               transform.Rotate(Vector3.forward * SpinVelocity * Time.deltaTime);
             }
-            else
-            {
-               xPosition -= (Velocity * Time.deltaTime);
-            }
-
-            transform.Rotate(Vector3.forward * SpinVelocity * Time.deltaTime);
-            transform.position = new Vector3(xPosition,
-                                             transform.position.y,
-                                             transform.position.z);
          }
       }
 
       private void HandleCollisionEffects()
       {
          if (BoomEffectPrefab != null)
-         { 
+         {
             GameObject boom = Instantiate(BoomEffectPrefab);
             boom.transform.position = gameObject.transform.position;
-         
+
             SpriteRenderer spriteRenderer = boom.GetComponent<SpriteRenderer>();
             if (spriteRenderer != null)
             {
@@ -104,7 +118,7 @@ namespace PotatoCat.Gameplay
          }
 
          if (CollisionAudio != null)
-         { 
+         {
             GameSimulation.Instance.AudioSource.PlayOneShot(CollisionAudio);
          }
 
