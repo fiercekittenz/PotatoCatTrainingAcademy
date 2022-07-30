@@ -15,7 +15,7 @@ public class CottonSmilesController : BaseEnemy
    public int SecondsOfVanTime = 5;
 
    //
-   // Public Properties (privately set)
+   // Public Properties
    //
 
    public ProjectileUserComponent ProjectileUserComponentRef { get; private set; }
@@ -56,6 +56,17 @@ public class CottonSmilesController : BaseEnemy
    }
 
    /// <summary>
+   /// Handle the death of the boss.
+   /// </summary>
+   public override void HandleDeath(bool fromJump = false)
+   {
+      base.HandleDeath(fromJump);
+
+      Collider2d.enabled = false;
+      Destroy(gameObject);
+   }
+
+   /// <summary>
    /// Process the frame.
    /// </summary>
    protected void FixedUpdate()
@@ -72,11 +83,29 @@ public class CottonSmilesController : BaseEnemy
                double timeInVan = DateTime.Now.Subtract(mVanModeStarted).TotalSeconds;
                if (timeInVan >= SecondsOfVanTime)
                {
-                  mState = State.Default;
-                  Animator.SetBool(skAnimParam_IsVanMode, false);
+                  SetVanMode(false);
                }
             }
             break;
+      }
+   }
+
+   private void SetVanMode(bool vanModeOn)
+   {
+      if (vanModeOn)
+      {
+         mState = State.Van;
+         ProjectileUserComponentRef.IsAutomaticFireOn = false;
+         mVanModeStarted = DateTime.Now;
+         CanTakeDamage = false; // No damage during van mode.
+         Animator.SetBool(skAnimParam_IsVanMode, true);
+      }
+      else
+      {
+         mState = State.Default;
+         ProjectileUserComponentRef.IsAutomaticFireOn = true;
+         CanTakeDamage = true;
+         Animator.SetBool(skAnimParam_IsVanMode, false);
       }
    }
 
@@ -87,17 +116,20 @@ public class CottonSmilesController : BaseEnemy
    {
       if (sender is HealthComponent healthComponent)
       {
-         // We only do 1 damage per attack as the player, so it's safe to do an equality check here.
-         if (healthComponent.CurrentHealth == HealthAmountVanTrigger)
+         // Bounce the player.
+         ProjectileUserComponentRef.PlayerComponentRef.Bounce(3);
+
+         if (healthComponent.CurrentHealth > 0)
          {
-            mState = State.Van;
-            mVanModeStarted = DateTime.Now;
-            Animator.SetBool(skAnimParam_IsVanMode, true);
-         }
-         else
-         {
-            mState = State.Default;
-            Animator.SetBool(skAnimParam_IsVanMode, false);
+            // We only do 1 damage per attack as the player, so it's safe to do an equality check here.
+            if (healthComponent.CurrentHealth == HealthAmountVanTrigger)
+            {
+               SetVanMode(true);
+            }
+            else
+            {
+               SetVanMode(false);
+            }
          }
       }
    }

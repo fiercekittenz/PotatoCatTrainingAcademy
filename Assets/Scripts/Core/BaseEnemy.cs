@@ -23,6 +23,7 @@ namespace PotatoCat.Core
       public Bounds Bounds => Collider2d.bounds;
       public HealthComponent HealthComponentRef { get; protected set; }
       public PlayerComponent PlayerComponentRef { get; protected set; }
+      public bool CanTakeDamage { get; set; } = true;
 
       protected virtual void Awake()
       {
@@ -49,14 +50,13 @@ namespace PotatoCat.Core
          if (collision.gameObject.tag.Equals("player", StringComparison.OrdinalIgnoreCase))
          {
             var playerComponent = collision.gameObject.GetComponent<PlayerComponent>();
-            if (playerComponent != null)
+            if (CanTakeDamage && playerComponent != null)
             {
                bool willHurtEnemy = playerComponent.Bounds.center.y >= Bounds.max.y;
                if (willHurtEnemy)
                {
                   // Only deal 1 damage when stomping. Record the player component for reference
                   // if the enemy handles damage by bouncing the player.
-                  Collider2d.enabled = false;
                   PlayerComponentRef = playerComponent;
                   HealthComponentRef.TakeDamage(1, true);
                }

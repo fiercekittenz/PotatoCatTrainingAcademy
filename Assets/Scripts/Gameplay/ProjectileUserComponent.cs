@@ -76,11 +76,13 @@ namespace PotatoCat.Gameplay
                {
                   if (PlayerComponentRef.Bounds.center.x < transform.position.x)
                   { 
+                     SpriteRendererRef.flipX = false;
                      projectileController.FireDirection = ProjectileController.Direction.Right;
                      FireDirection = FireDirectionValues.Right;
                   }
                   else
                   {
+                     SpriteRendererRef.flipX = true;
                      projectileController.FireDirection = ProjectileController.Direction.Left;
                      FireDirection = FireDirectionValues.Left;
                   }
@@ -124,14 +126,14 @@ namespace PotatoCat.Gameplay
                Vector3 difference = targetLocation - projectile.transform.position;
 
                // Determine the rotation based on the difference.
-               float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+               //float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
 
                // Get the distance and determine the direction, then apply the rotation to the
                // projectile so that it faces where it's firing.
                float distance = difference.magnitude;
                Vector2 direction = difference / distance;
                direction.Normalize();
-               projectile.transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotationZ);
+               //projectile.transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotationZ);
 
                // Set the velocity of the rigid body component based on the direction and configured speed.
                // The physics system will handle the actual movement updates for render.

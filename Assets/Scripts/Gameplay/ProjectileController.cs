@@ -25,7 +25,7 @@ namespace PotatoCat.Gameplay
          set
          {
             mFireDirection = value;
-            if (mSpriteRenderer != null && FireDirection == Direction.Right)
+            if (mSpriteRenderer != null && FireDirection == Direction.Left)
             {
                mSpriteRenderer.flipX = true;
             }

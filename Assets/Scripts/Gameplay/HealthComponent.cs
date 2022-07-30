@@ -23,6 +23,7 @@ namespace PotatoCat.Gameplay
 
       [HideInInspector]
       public int CurrentHealth { get; private set; } = 0;
+      public Collider2D Collider2d { get; set; }
       private HeartMeterComponent HeartMeterComponent { get; set; }
       private PlayerComponent PlayerComponent { get; set; }
       private BaseEnemy BaseEnemyComponent { get; set; }
@@ -58,6 +59,11 @@ namespace PotatoCat.Gameplay
             }
             else if (BaseEnemyComponent != null)
             {
+               if (Collider2d != null)
+               { 
+                  Collider2d.enabled = false;
+               }
+
                BaseEnemyComponent.HandleDeath(fromJump);
             }
 
@@ -101,6 +107,7 @@ namespace PotatoCat.Gameplay
       {
          CurrentHealth = MaxHealth;
 
+         Collider2d = GetComponent<Collider2D>();
          HeartMeterComponent = gameObject.GetComponentInParent<HeartMeterComponent>();
          PlayerComponent = gameObject.GetComponentInParent<PlayerComponent>();
          BaseEnemyComponent = gameObject.GetComponentInParent<BaseEnemy>();
