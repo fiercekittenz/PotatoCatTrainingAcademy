@@ -26289,6 +26289,8 @@ MonoBehaviour:
   AllowStompDamageFromPlayer: 1
   HealthAmountVanTrigger: 3
   SecondsOfVanTime: 5
+  LeftMostPosition: {x: 46.958, y: -4.857}
+  RightMostPosition: {x: 50.293, y: -4.857}
 --- !u!1001 &1637826072
 PrefabInstance:
   m_ObjectHideFlags: 0

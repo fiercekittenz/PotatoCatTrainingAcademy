@@ -9,26 +9,36 @@ namespace PotatoCat.Mechanics
       Transform mObjectTransform;
       Vector2 mStartPosition;
       Vector2 mEndPosition;
-      float p = 0;
-      float duration;
-      float startTime;
+      float mSpeed = 1.0f;
+      float mPingPong = 0;
+      float mDuration;
+      float mStartTime;
 
       public Mover(Transform objectTransform, Vector2 startPosition, Vector2 endPosition, float speed)
       {
          mObjectTransform = objectTransform;
          mStartPosition = startPosition;
-         mEndPosition = endPosition;
+         mEndPosition = endPosition;         
+         mStartTime = Time.time;
+         Speed = speed;
+      }
 
-         duration = (mEndPosition - mStartPosition).magnitude / speed;
-         startTime = Time.time;
+      public float Speed
+      {
+         get { return mSpeed; }
+         set
+         {
+            mSpeed = value;
+            mDuration = (mEndPosition - mStartPosition).magnitude / value;
+         }
       }
 
       public Vector2 Position
       {
          get
          {
-            p = Mathf.InverseLerp(0, duration, Mathf.PingPong(Time.time - startTime, duration));
-            return Vector2.Lerp(mStartPosition, mEndPosition, p);
+            mPingPong = Mathf.InverseLerp(0, mDuration, Mathf.PingPong(Time.time - mStartTime, mDuration));
+            return Vector2.Lerp(mStartPosition, mEndPosition, mPingPong);
          }
       }
    }

@@ -1,5 +1,6 @@
 using PotatoCat.Core;
 using PotatoCat.Gameplay;
+using PotatoCat.Mechanics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ public class CottonSmilesController : BaseEnemy
 
    public int HealthAmountVanTrigger = 3;
    public int SecondsOfVanTime = 5;
+   public Vector2 LeftMostPosition;
+   public Vector2 RightMostPosition;
 
    //
    // Public Properties
@@ -20,6 +23,7 @@ public class CottonSmilesController : BaseEnemy
 
    public ProjectileUserComponent ProjectileUserComponentRef { get; private set; }
    public Animator Animator { get; private set; }
+   public SpriteRenderer SpriteRendererRef { get; private set; }
 
    //
    // Public Enums
@@ -37,6 +41,7 @@ public class CottonSmilesController : BaseEnemy
 
    private State mState = State.Default;
    private DateTime mVanModeStarted;
+   private Mover mMover;
    private static string skAnimParam_IsVanMode = "IsVanMode";
 
    /// <summary>
@@ -48,11 +53,14 @@ public class CottonSmilesController : BaseEnemy
 
       ProjectileUserComponentRef = GetComponent<ProjectileUserComponent>();
       Animator = GetComponent<Animator>();
+      SpriteRendererRef = GetComponent<SpriteRenderer>();
 
       if (HealthComponentRef != null)
       {
          HealthComponentRef.OnHealthChanged += HealthComponentRef_OnHealthChanged;
       }
+
+      mMover = new Mover(gameObject.transform, RightMostPosition, LeftMostPosition, 1.0f);
    }
 
    /// <summary>
@@ -75,11 +83,13 @@ public class CottonSmilesController : BaseEnemy
       {
          case State.Default:
             {
+               mMover.Speed = 0.5f;
             }
             break;
 
          case State.Van:
             {
+               mMover.Speed = 1.5f;
                double timeInVan = DateTime.Now.Subtract(mVanModeStarted).TotalSeconds;
                if (timeInVan >= SecondsOfVanTime)
                {
@@ -87,6 +97,33 @@ public class CottonSmilesController : BaseEnemy
                }
             }
             break;
+      }
+
+      if (mMover != null)
+      {
+         // We only care about left to right movement on the x axis.
+         float currentX = gameObject.transform.localPosition.x;
+
+         float newX = mMover.Position.x;
+         float newY = mMover.Position.y;
+
+         if (mState == State.Van)
+         {
+            // Only in van mode does the sprite renderer need to be flipped, because
+            // when shooting, it will face the player's position.
+            if (currentX > newX)
+            {
+               SpriteRendererRef.flipX = true;
+            }
+            else
+            {
+               SpriteRendererRef.flipX = false;
+            }
+         }
+
+         gameObject.transform.localPosition = new Vector3(newX,
+                                                          newY,
+                                                          gameObject.transform.localPosition.z);
       }
    }
 
