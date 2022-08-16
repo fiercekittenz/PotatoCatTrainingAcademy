@@ -168,9 +168,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be16f60add0bb12439eef194f28e35a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SecondsUntilDeath: 3
-  Velocity: 3.5
+  MillisecondsUntilDeath: 3000
+  Velocity: 4
   SpinVelocity: -500
+  DamageDealt: 1
   CollisionAudio: {fileID: 8300000, guid: b49b73cc9d63ef049a2a267cbcf4fb64, type: 3}
   BoomEffectPrefab: {fileID: 2374764009071037323, guid: 381b82a822712c643bc76210e55d9ba3, type: 3}
 --- !u!114 &5521010830355224764

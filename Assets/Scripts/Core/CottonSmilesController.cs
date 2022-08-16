@@ -154,7 +154,8 @@ public class CottonSmilesController : BaseEnemy
       if (sender is HealthComponent healthComponent)
       {
          // Bounce the player.
-         ProjectileUserComponentRef.PlayerComponentRef.Bounce(3);
+         //kittenztodo: this is bouncing the player even if damage was from the lightsaber (maybe don't allow lightsaber?).
+         ProjectileUserComponentRef.PlayerComponentRef.Bounce(5);
 
          if (healthComponent.CurrentHealth > 0)
          {
